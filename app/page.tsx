@@ -4,6 +4,9 @@
 import { useCallback, useEffect, useState } from "react";
 
 type Reading = {
+  ai_status: "NORMAL" | "ANOMALY" | "PENDING";
+  prediction: number | null;
+  anomaly_score: number | null;
   id: number;
   device_id: string;
   created_at: string;
