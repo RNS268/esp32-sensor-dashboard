@@ -149,6 +149,7 @@ export default function Home() {
   }, [refresh]);
 
   const latest = readings[0];
+  const aiStatus = latest?.ai_status ?? "PENDING";
   const alerts = latest
     ? [
         latest.vibration_alert && "Sudden vibration detected",
@@ -190,7 +191,24 @@ export default function Home() {
           {error}
         </div>
       )}
-
+      <section className={`notice ${
+  aiStatus === "ANOMALY" ? "danger" :
+  aiStatus === "NORMAL" ? "safe" : ""
+}`}>
+  <div className="notice-title">
+    Isolation Forest AI Status
+  </div>
+  <p>
+    {aiStatus === "PENDING"
+      ? "Prediction pending"
+      : aiStatus}
+  </p>
+  {latest?.anomaly_score != null && (
+    <p className="muted">
+      Anomaly score: {latest.anomaly_score.toFixed(4)}
+    </p>
+  )}
+</section>
       <section className={`notice ${alerts.length ? "danger" : "safe"}`}>
         <div className="notice-title">
           <span className={`dot ${alerts.length ? "red" : "green"}`} />
